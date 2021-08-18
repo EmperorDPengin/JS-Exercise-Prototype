@@ -81,7 +81,10 @@ spencer.poop();
 console.log(spencer.stomach);
 
 
+const numbers = [5, 10, 15]; 
+const newnum = numbers.reduce((total,currentValue) => { return total + currentValue; }, 0);
 
+console.log(newnum);
 
 
 
@@ -100,9 +103,43 @@ console.log(spencer.stomach);
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
+}
+
+Car.prototype.fill = function(gallons){
+  this.tank = this.tank + gallons;
+  return `${this.model} has ${this.tank} Gallons`;
+}
+
+Car.prototype.drive = function(distance){
+  let maxDistance = this.gallons * this.milesPerGallon;
+  if(distance > maxDistance){
+    this.odometer += maxDistance;
+    this.tank = 0;
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  }else{
+    this.odometer += distance;
+    this.tank -= (distance/this.milesPerGallon);
+  }
   
 }
+
+const car1 = new Car('2000', 15);
+const car2 = new Car('2010', 25);
+const car3 = new Car('2020', 40);
+
+// Stretch 2.1
+
+car1.fill(100);
+car2.fill(100);
+car3.fill(100);
+console.log(`Task 2.1 ${car1.model} has ${car1.tank} Gallons of Fuel. MTD: ${car1.tank * car1.milesPerGallon}` );
+console.log(`Task 2.1 ${car2.model} has ${car2.tank} Gallons of Fuel. MTD: ${car2.tank * car2.milesPerGallon}` );
+console.log(`Task 2.1 ${car3.model} has ${car3.tank} Gallons of Fuel. MTD: ${car3.tank * car3.milesPerGallon}` );
 
 
 /*
@@ -112,8 +149,15 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
- 
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
+}
+
+Baby.prototype = Object.create(Person.prototype);
+
+Baby.prototype.play = function(){
+  return `Playing with ${this.favoriteToy}`;
 }
 
 
